@@ -1,0 +1,23 @@
+* {
+  margin: 0px;
+}
+
+.container {
+  background-color: #333333;
+  height: 100vh !important;
+}
+
+.test {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Actor';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 43px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
