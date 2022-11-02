@@ -1,16 +1,26 @@
-import './App.css';
-
 import {
   useQuery,
 } from 'react-query'
 
-import { Button, Checkbox, Grid, Input } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { Button, Grid, Input, Popover, Switch } from '@mui/material';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+
+import './App.css';
+import Todo from './Todo';
 
 const App = () => {
-  const initialData = [{id: 0, title: '15', checked: true}, {id: 2, title: '1222', checked: false}]
+  const initialData = [{id: 0, title: 'Visit David', checked: false}, 
+  {id: 1, title: 'Goceries For Dinner', checked: false},
+  {id: 2, title: 'Fix Dad’s iPad', checked: true}]
+
   const [todos, setTodos] = useState([])
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [newOpen, setNewOpen] = useState(true);
+
   useEffect(() => {
     setTodos(initialData)
   },[])
@@ -21,6 +31,7 @@ const App = () => {
     } else {
       let todo = {id: inputRef.current.value, title: inputRef.current.value, checked: false}
       setTodos([ ...todos, todo ]);
+      inputRef.current.value = ''
     }
   };
 
@@ -52,28 +63,68 @@ const App = () => {
 
   if (error) return <p>Ошибка: {error.message}</p>;
 
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+
   return (
-        <Grid container spacing={2} className='container'>
+        <Grid container spacing={2} className='todo'>
           <Grid item md={6} display="flex" justifyContent="center" alignItems="center">
             <div className='test'>Тестовое задание</div>
           </Grid>
           <Grid item md={6} display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-            <Input inputRef={inputRef} placeholder="Todo"/>
-            <Button onClick={() => addToList(inputRef)}>Add Todo</Button>
-          {todos?.map((el) => {
-            return (
-              <div className='flex' key={el.id}>
-                <div className={el.checked ? 'done' : ''}>
-                  {el.title}
+            <div className='todo-container'>
+                <div className='todo__header'>
+                  <h2>To Do</h2>
+                  <div>
+                    <Button aria-describedby={id} onClick={handleClick}>
+                      <SettingsRoundedIcon/>
+                    </Button>
+                    <Popover
+                      id={id}
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'top',
+                      }}
+                    >
+                      <div className='popover'>
+                        <div>
+                          Visible news
+                        </div>
+                      <Switch
+                        checked={newOpen} 
+                        onClick={() => setNewOpen(!newOpen)}
+                        checkedIcon={<CheckCircleIcon/>}
+                        icon={<CancelIcon/>}
+                       />
+                      </div>
+                    </Popover>
+                  </div>
                 </div>
-                <Checkbox checked={el.checked} onClick={() => onCheck(el)}/>
+                <Input inputRef={inputRef} placeholder="Todo" className='input'/>
+                <Button onClick={() => addToList(inputRef)}>Add Todo</Button>
+              {todos?.map((todo) => {
+                return (
+                  <Todo todo={todo} onCheck={onCheck}/>
+                )
+              })}
+              {newOpen && <div>{data.map(el => {
+                  return (<div> {el.title} </div>)})}
+                </div>}
               </div>
-            )
-          })}
-          <div>{data.map(el => {
-            return (<div> {el.title} </div>)})}
-          </div>
-        </Grid>
+          </Grid>
         </Grid>
   );
 }

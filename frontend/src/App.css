@@ -1,27 +1,56 @@
 * {
   margin: 0px;
+  font-family: 'Actor';
+  color: #F4F4F4;
 }
 
-.container {
+.todo {
   background-color: #333333;
-  height: 100vh !important;
+  width: 100vw;
+  height: 100vh;
+}
+
+.todo-container {
+  background-color: #121212;
+  border-radius: 30px;
+  padding: 15px;
+  max-width: 390px;
+}
+
+.todo__header {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
+  justify-content: space-between;
+  width: 100%;
 }
 
 .test {
   color: rgba(255, 255, 255, 0.7);
-  font-family: 'Actor';
   font-style: normal;
   font-weight: 400;
   font-size: 36px;
   line-height: 43px;
 }
 
+.input {
+  color: white !important;
+}
+
 .flex {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .done {
   text-decoration: line-through;
+}
+
+.popover {
+  background-color: black !important;
+  border: blue 1px solid;
+  border-radius: 13px;
+  padding: 7px;
 }
